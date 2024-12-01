@@ -1,21 +1,30 @@
+import kotlin.math.abs
+
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
+    fun parseLists(input: List<String>) =
+        input
+            .map {
+                val (first, second) = it.split("   ").map { n -> n.toInt() }
+                first to second
+            }.unzip()
 
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
+    fun part1(
+        firstList: List<Int>,
+        secondList: List<Int>,
+    ): Int = firstList.sorted().zip(secondList.sorted()).fold(0) { acc, (a, b) -> acc + abs(a - b) }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
+    fun part2(
+        firstList: List<Int>,
+        secondList: List<Int>,
+    ): Int = firstList.fold(0) { acc, a -> acc + a * secondList.count { it == a } }
 
-    // Or read a large test input from the `src/Day01_test.txt` file:
     val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+    val (firstListTest, secondListTest) = parseLists(testInput)
 
-    // Read the input from the `src/Day01.txt` file.
+    check(part1(firstListTest, secondListTest) == 11)
+
     val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    val (firstList, secondList) = parseLists(input)
+    part1(firstList, secondList).println()
+    part2(firstList, secondList).println()
 }
